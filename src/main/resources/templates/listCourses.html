@@ -16,7 +16,7 @@
 </header>
 <main>
     <h2>Choose course:</h2>
-    <form th:method="POST">
+    <form th:method="POST" th:action="@{/listCourses}">
 
         <th:block th:each="course : ${courses}">
             <input type="radio" name="courseId" th:id="${course.getDescription()}" th:value="${course.getCourseId()}">

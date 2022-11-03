@@ -31,4 +31,11 @@ public class CoursesListServlet extends HttpServlet {
 
         this.springTemplateEngine.process("listCourses.html", webContext, resp.getWriter());
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String courseId = req.getParameter("courseId");
+        req.getSession().setAttribute("courseId", courseId);
+        resp.sendRedirect("/AddStudent");
+    }
 }

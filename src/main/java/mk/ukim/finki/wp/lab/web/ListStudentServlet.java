@@ -1,5 +1,6 @@
 package mk.ukim.finki.wp.lab.web;
 
+import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.repository.StudentRepository;
 import mk.ukim.finki.wp.lab.service.StudentService;
@@ -29,17 +30,21 @@ public class ListStudentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        context.setVariable("students", studentService.listAll());
-        context.setVariable("st", "Testing");
 
-        List<Student> students = studentService.listAll();
-        System.out.println(students.get(0).getName());
+        context.setVariable("students", studentService.listAll());
+
         this.springTemplateEngine.process("listStudents.html", context, resp.getWriter());
 
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        WebContext context = new WebContext(req, resp, req.getServletContext());
+        context.setVariable("students", studentService.listAll());
+
+        List<Student> students = studentService.listAll();
+        //System.out.println(students.get(0).getName());
+        this.springTemplateEngine.process("listStudents.html", context, resp.getWriter());
+
     }
 }

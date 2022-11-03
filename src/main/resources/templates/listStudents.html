@@ -7,18 +7,22 @@
             width: 800px;
             margin: auto;
         }
+
         table {
-            width:100%;
+            width: 100%;
         }
+
         table, td, th {
             border: 1px solid black;
-            padding:3px 2px;
+            padding: 3px 2px;
         }
+
         section {
             float: left;
             margin: 0 1.5%;
             width: 63%;
         }
+
         aside {
             float: right;
             margin: 0 1.5%;
@@ -32,20 +36,29 @@
 </header>
 <section>
     <h2>Select the student to enroll:</h2>
-    <a href='/createStudent' type='button'>Create New Student</a> <br/> <br/>
+    <!-- TODO
+        Map createStudent link to the servlet
+        -->
+    <a href='/CreateStudent' type='button'>Create New Student</a> <br/> <br/>
     <!--<input type="radio" name="size" th:each="student : ${students}"><th:block th:text="${}"/>
+
        -->
-    <input type="radio" name="size"><th:block th:text="${st}"/>
+    <form th:method="POST" >
+        <th:block th:each="student : ${students}">
+            <label>
+                <input type="radio" name="size" th:value="${student.username}">
+                <th:block th:text="${student.getName()} + ' ' + ${student.getSurname()}"/>
+            </label>
+            <br>
+        </th:block>
 
-    <p th:each="student : ${students}"><input type="radio" name="size" th:attr="value=${student.getUsername()}">
-        <th:block th:text="${student.getName()}"/></p>
-
-<!--    <input type="radio" name="size" value="petar.petrov"> Петар Петров <br/>-->
-<!--    <input type="radio" name="size" value="mile.milev"> Миле Милев <br/>-->
-<!--    <input type="radio" name="size" value="gjorgji.gjorgjiev"> Ѓорѓи Ѓорѓиев <br/>-->
-    <br/>
-
-    <a href="/StudentEnrollmentSummary">Submit</a>
+        <!--    <input type="radio" name="size" value="petar.petrov"> Петар Петров <br/>-->
+        <!--    <input type="radio" name="size" value="mile.milev"> Миле Милев <br/>-->
+        <!--    <input type="radio" name="size" value="gjorgji.gjorgjiev"> Ѓорѓи Ѓорѓиев <br/>-->
+        <br/>
+        <input type="submit" value="Submit">
+<!--        <a href="/StudentEnrollmentSummary">Submit</a>-->
+    </form>
 </section>
 <aside>
     <table>
@@ -56,7 +69,7 @@
         </tr>
         <tr>
             <td><b>Course Id</b></td>
-            <td>2</td>
+            <td th:text="${session.courseId}"></td>
         </tr>
     </table>
 </aside>

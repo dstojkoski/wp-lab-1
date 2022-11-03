@@ -18,8 +18,8 @@ public class CourseRepository {
         courses.add(new Course(101,"Веб програмирање", "WP"));
         courses.add(new Course(201, "Вештачка интелигенција", "AI"));
         courses.add(new Course(301, "Машинско учење", "ML"));
-        courses.add(new Course(301, "Паралелно програмирање", "PP"));
-        courses.add(new Course(301, "Линеарна алгебра", "LA"));
+        courses.add(new Course(401, "Паралелно програмирање", "PP"));
+        courses.add(new Course(501, "Линеарна алгебра", "LA"));
     }
     public List<Course> findAllCourses(){
         return courses;
