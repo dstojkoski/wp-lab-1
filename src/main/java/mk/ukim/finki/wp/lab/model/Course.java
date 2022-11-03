@@ -11,10 +11,9 @@ public class Course {
     private String description;
     private List<Student> students;
 
-    public Course(long courseId, String name, String description, List<Student> students) {
+    public Course(long courseId, String name, String description) {
         this.courseId = courseId;
         this.name = name;
         this.description = description;
-        this.students = students;
     }
 }

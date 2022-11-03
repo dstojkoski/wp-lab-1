@@ -32,7 +32,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course addStudentInCourse(String username, Long courseId) {
-
         return courseRepository.addStudentToCourse(studentService.searchByNameOrSurname(username).get(0), courseRepository.findById(courseId));
     }
 }
