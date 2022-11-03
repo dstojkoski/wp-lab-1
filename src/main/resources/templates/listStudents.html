@@ -36,17 +36,15 @@
 </header>
 <section>
     <h2>Select the student to enroll:</h2>
-    <!-- TODO
-        Map createStudent link to the servlet
-        -->
+
     <a href='/CreateStudent' type='button'>Create New Student</a> <br/> <br/>
     <!--<input type="radio" name="size" th:each="student : ${students}"><th:block th:text="${}"/>
 
        -->
-    <form th:method="POST" >
+    <form th:method="POST" th:action="@{StudentEnrollmentSummary}">
         <th:block th:each="student : ${students}">
             <label>
-                <input type="radio" name="size" th:value="${student.username}">
+                <input type="radio" name="student" th:value="${student.username}" required>
                 <th:block th:text="${student.getName()} + ' ' + ${student.getSurname()}"/>
             </label>
             <br>

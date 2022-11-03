@@ -29,10 +29,13 @@ public class ListStudentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (req.getSession().getAttribute("courseId") == null) {
+            resp.sendRedirect("/listCourses");
+            return;
+        }
+
         WebContext context = new WebContext(req, resp, req.getServletContext());
-
         context.setVariable("students", studentService.listAll());
-
         this.springTemplateEngine.process("listStudents.html", context, resp.getWriter());
 
     }

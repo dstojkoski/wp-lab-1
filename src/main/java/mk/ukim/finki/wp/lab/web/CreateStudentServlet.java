@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name="create-student", urlPatterns = "/CreateStudent")
+@WebServlet(name = "create-student", urlPatterns = "/CreateStudent")
 public class CreateStudentServlet extends HttpServlet {
 
     private final SpringTemplateEngine springTemplateEngine;
@@ -24,9 +24,13 @@ public class CreateStudentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        WebContext context = new WebContext(req,resp, req.getServletContext());
+        WebContext context = new WebContext(req, resp, req.getServletContext());
+        if (req.getSession().getAttribute("courseId") == null) {
+            resp.sendRedirect("/listCourses");
+            return;
+        }
+        springTemplateEngine.process("createStudent.html", context, resp.getWriter());
 
-        springTemplateEngine.process("createStudent.html",context, resp.getWriter());
     }
 
     @Override
@@ -36,7 +40,7 @@ public class CreateStudentServlet extends HttpServlet {
         String name = req.getParameter("name");
         String surname = req.getParameter("surname");
 
-        studentService.save(username,password,name,surname);
+        studentService.save(username, password, name, surname);
 
         resp.sendRedirect("/AddStudent");
     }

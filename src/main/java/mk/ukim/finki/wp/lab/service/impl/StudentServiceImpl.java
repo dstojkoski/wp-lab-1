@@ -27,6 +27,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Student searchByUsername(String username) {
+        return studentRepository.findAllStudents().stream().filter(s->s.getUsername().equals(username)).findFirst().get();
+    }
+
+    @Override
     public Student save(String username, String password, String name, String surname) {
         return studentRepository.addStudent(username, password, name, surname);
     }
