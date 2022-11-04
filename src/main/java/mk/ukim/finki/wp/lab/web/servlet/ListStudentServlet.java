@@ -1,4 +1,4 @@
-package mk.ukim.finki.wp.lab.web;
+package mk.ukim.finki.wp.lab.web.servlet;
 
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
@@ -28,10 +28,10 @@ public class ListStudentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getSession().getAttribute("courseId") == null) {
-            resp.sendRedirect("/listCourses");
-            return;
-        }
+//        if (req.getSession().getAttribute("courseId") == null) {
+//            resp.sendRedirect("/listCourses");
+//            return;
+//        }
 
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("students", studentService.listAll());
@@ -41,8 +41,8 @@ public class ListStudentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String courseId = req.getParameter("courseId");
-        req.getSession().setAttribute("courseId", courseId);
-        doGet(req,resp);
+//        String courseId = req.getParameter("courseId");
+//        req.getSession().setAttribute("courseId", courseId);
+//        doGet(req,resp);
     }
 }

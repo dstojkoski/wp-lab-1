@@ -1,4 +1,4 @@
-package mk.ukim.finki.wp.lab.web;
+package mk.ukim.finki.wp.lab.web.servlet;
 
 import mk.ukim.finki.wp.lab.service.StudentService;
 import org.thymeleaf.context.WebContext;
@@ -25,10 +25,10 @@ public class CreateStudentServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        if (req.getSession().getAttribute("courseId") == null) {
-            resp.sendRedirect("/listCourses");
-            return;
-        }
+//        if (req.getSession().getAttribute("courseId") == null) {
+//            resp.sendRedirect("/listCourses");
+//            return;
+//        }
         springTemplateEngine.process("createStudent.html", context, resp.getWriter());
 
     }

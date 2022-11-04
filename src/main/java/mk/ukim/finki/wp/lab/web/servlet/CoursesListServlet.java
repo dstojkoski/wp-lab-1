@@ -1,4 +1,4 @@
-package mk.ukim.finki.wp.lab.web;
+package mk.ukim.finki.wp.lab.web.servlet;
 
 import mk.ukim.finki.wp.lab.service.CourseService;
 import org.thymeleaf.context.WebContext;
@@ -32,8 +32,8 @@ public class CoursesListServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        String courseId = req.getParameter("courseId");
-//        req.getSession().setAttribute("courseId", courseId);
-//        resp.sendRedirect("/AddStudent");
+        String courseId = req.getParameter("courseId");
+        req.getSession().setAttribute("courseId", courseId);
+        resp.sendRedirect("/AddStudent");
     }
 }
