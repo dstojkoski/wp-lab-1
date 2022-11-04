@@ -10,9 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
-@WebServlet(name = "courses", urlPatterns = "/listCourses")
+@WebServlet(name = "coursesServlet", urlPatterns = "/listCourses")
 public class CoursesListServlet extends HttpServlet {
 
     private final CourseService courseService;
@@ -28,14 +27,13 @@ public class CoursesListServlet extends HttpServlet {
         WebContext webContext = new WebContext(req,resp,req.getServletContext());
         webContext.setVariable("courses", courseService.listAll());
 
-
         this.springTemplateEngine.process("listCourses.html", webContext, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String courseId = req.getParameter("courseId");
-        req.getSession().setAttribute("courseId", courseId);
-        resp.sendRedirect("/AddStudent");
+//        String courseId = req.getParameter("courseId");
+//        req.getSession().setAttribute("courseId", courseId);
+//        resp.sendRedirect("/AddStudent");
     }
 }

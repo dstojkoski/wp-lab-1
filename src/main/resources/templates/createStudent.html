@@ -11,10 +11,10 @@
 <section>
 
     <form th:method="POST" th:action="@{/CreateStudent}">
-        <label for='username'>Username:</label><input id='username' type='text' name='username'/><br/>
-        <label for='password'>Password:</label><input id='password' type='password' name='password'/><br/>
-        <label for='name'>Name:</label><input id='name' type='text' name='name'/><br/>
-        <label for='name'>Surname:</label><input id='surname' type='text' name='surname'/><br/>
+        <label for='username'>Username:</label><input id='username' type='text' required name='username'/><br/>
+        <label for='password'>Password:</label><input id='password' type='password' required name='password'/><br/>
+        <label for='name'>Name:</label><input id='name' type='text' required name='name'/><br/>
+        <label for='name'>Surname:</label><input id='surname' type='text' required name='surname'/><br/>
         <input type='submit' value='Submit'/>
     </form>
 

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name="student-enrollment", urlPatterns = "/StudentEnrollmentSummary")
+@WebServlet(name = "studentEnrollment", urlPatterns = "/StudentEnrollmentSummary")
 public class StudentEnrollmentSummary extends HttpServlet {
 
     CourseService courseService;
@@ -29,17 +29,24 @@ public class StudentEnrollmentSummary extends HttpServlet {
             resp.sendRedirect("/listCourses");
             return;
         }
+        WebContext context = new WebContext(req, resp, req.getServletContext());
+        Long id = Long.parseLong((String) req.getSession().getAttribute("courseId"));
+
+        Course c = courseService.listAll().stream().filter(s -> s.getCourseId() == id).findFirst().get();
+        context.setVariable("courseSummary", c);
+        springTemplateEngine.process("studentsInCourse.html", context, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        WebContext context = new WebContext(req,resp, req.getServletContext());
+        WebContext context = new WebContext(req, resp, req.getServletContext());
         Long id = Long.parseLong((String) req.getSession().getAttribute("courseId"));
-        String username = req.getParameter("student");
 
+        String username = req.getParameter("student");
         Course c = courseService.addStudentInCourse(username, id);
+
         context.setVariable("courseSummary", c);
-        context.setVariable("studentsInCourse", c.getStudents());
+        //context.setVariable("studentsInCourse", c.getStudents());
 
         springTemplateEngine.process("studentsInCourse.html", context, resp.getWriter());
     }

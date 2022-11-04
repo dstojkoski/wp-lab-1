@@ -16,7 +16,7 @@
 </header>
 <main>
     <h2>Choose course:</h2>
-    <form th:method="POST" th:action="@{/listCourses}">
+    <form th:method="POST" th:action="@{/AddStudent}">
 
         <th:block th:each="course : ${courses}">
             <input type="radio" name="courseId" th:id="${course.getDescription()}" th:value="${course.getCourseId()}">
@@ -24,6 +24,7 @@
             <br>
 
         </th:block>
+
 <!--        &lt;!&ndash;th:action="/AddStudent"&ndash;&gt;-->
 <!--        <input type="radio" name="courseId" value="1"> Веб програмирање<br/>-->
 <!--        <input type="radio" name="courseId" value="2"> Оперативни системи<br/>-->
