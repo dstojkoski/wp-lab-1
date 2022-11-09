@@ -9,5 +9,6 @@ import java.util.List;
 public interface CourseService{
     List<Course> listAll();
     List<Student> listStudentsByCourse(Long courseId);
+    List<Course> listByText(String text);
     Course addStudentInCourse(String username, Long courseId);
 }

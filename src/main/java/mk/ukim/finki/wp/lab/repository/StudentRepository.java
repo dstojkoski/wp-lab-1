@@ -15,18 +15,19 @@ public class StudentRepository {
 
     @PostConstruct
     void init(){
-        students.add(new Student("aleksandar.aleksandrovski","pass123", "Aleksandar", "Aleksandrovski" ));
-        students.add(new Student("bojan.karagjozov",         "kepler",  "Bojan",      "Karagjozov" ));
-        students.add(new Student("martin.vujadinov",         "pass123", "Martin",     "Vujadinov" ));
-        students.add(new Student("teodora.miladinova",       "cassiopeia","Teodora", "Miladinova" ));
-        students.add(new Student("mihaela.petrovska",        "orion",   "Mihaela",    "Petrovska" ));
+        students.add(new Student("aleksandar.aleksandrovski","pass123", "Александар", "Александровски" ));
+        students.add(new Student("bojan.karagjozov",         "kepler",       "Бојан",        "Бојанов" ));
+        students.add(new Student("martin.vujadinov",         "pass123",     "Мартин",       "Мартинов" ));
+        students.add(new Student("mario.jovanov",            "testest",      "Марио",        "Јованов" ));
+        students.add(new Student("teodora.miladinova",       "cassiopeia", "Теодора",     "Миладинова" ));
+        students.add(new Student("jovana.aleksandrova",        "orion",       "Јована", "Александрова" ));
     }
     public List<Student> findAllStudents(){
         return students;
     }
 
     public List<Student> findAllByNameOrSurname(String text){
-        return students.stream().filter(s -> s.getName().contains(text) || s.getSurname().contains(text)).collect(Collectors.toList());
+        return students.stream().filter(s -> s.getName().toLowerCase().contains(text.toLowerCase()) || s.getSurname().toLowerCase().contains(text.toLowerCase())).collect(Collectors.toList());
     }
 
     public Student addStudent(String username, String password, String name, String surname){

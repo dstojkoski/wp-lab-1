@@ -26,6 +26,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<Course> listByText(String text) {
+        return courseRepository.findByName(text.trim());
+    }
+
+    @Override
     public List<Student> listStudentsByCourse(Long courseId) {
        return courseRepository.findAllStudentsByCourse(courseId);
     }

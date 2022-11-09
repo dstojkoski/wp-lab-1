@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class CourseRepository {
@@ -28,6 +29,10 @@ public class CourseRepository {
 
     public Course findById(long courseId) {
         return courses.stream().filter(s -> s.getCourseId() == courseId).findFirst().orElse(null);
+    }
+
+    public List<Course> findByName(String name){
+        return courses.stream().filter(s -> s.getName().contains(name)).collect(Collectors.toList());
     }
 
     public List<Student> findAllStudentsByCourse(Long courseId) {

@@ -13,6 +13,9 @@
 <body>
 <header>
     <h1>Courses List</h1>
+<!--    <ul>-->
+<!--        <li  th:each="course : ${courses}" th:text="${course.name}"></li>-->
+<!--    </ul>-->
 </header>
 <main>
     <h2>Choose course:</h2>
@@ -31,9 +34,11 @@
 <!--        <input type="radio" name="courseId" value="3"> Електронска и мобилна трговија<br/>-->
 <!--        <input type="radio" name="courseId" value="4"> Компјутерски мрежи<br/>-->
 
-<!--        <br/>-->
+        <br/>
         <input type="submit" value="Submit">
     </form>
+    <br>
+    <a href="/search">Search students</a>
 
 </main>
 </body>

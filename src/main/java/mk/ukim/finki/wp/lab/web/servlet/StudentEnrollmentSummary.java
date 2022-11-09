@@ -47,7 +47,7 @@ public class StudentEnrollmentSummary extends HttpServlet {
 
         context.setVariable("courseSummary", c);
         //context.setVariable("studentsInCourse", c.getStudents());
-
+        req.getSession().invalidate();
         springTemplateEngine.process("studentsInCourse.html", context, resp.getWriter());
     }
 }
