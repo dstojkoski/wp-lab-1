@@ -55,9 +55,15 @@
         <!--    <input type="radio" name="size" value="gjorgji.gjorgjiev"> Ѓорѓи Ѓорѓиев <br/>-->
         <br/>
         <input type="submit" value="Submit">
-<!--        <a href="/StudentEnrollmentSummary">Submit</a>-->
+        <!--        <a href="/StudentEnrollmentSummary">Submit</a>-->
     </form>
-    <form th:method="POST"></form>
+    <div>
+        <form th:method="POST" th:action="@{/search}">
+            <label>Search: <input type="text" name="search"></label>
+            <input type="submit" value="Submit">
+            <button value="clear" th:action="@{/AddStudent}">Clear</button>
+        </form>
+    </div>
 </section>
 <aside>
     <table>

@@ -40,7 +40,7 @@ public class StudentEnrollmentSummary extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        Long id = Long.parseLong((String) req.getSession().getAttribute("courseId"));
+        Long id = (Long) req.getSession().getAttribute("courseId");
 
         String username = req.getParameter("student");
         Course c = courseService.addStudentInCourse(username, id);

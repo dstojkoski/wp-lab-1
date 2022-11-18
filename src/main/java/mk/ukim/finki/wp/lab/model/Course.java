@@ -11,9 +11,10 @@ public class Course {
     private String name;
     private String description;
     private List<Student> students;
+    private Teacher teacher;
 
-    public Course(long courseId, String name, String description) {
-        this.courseId = courseId;
+    public Course(String name, String description) {
+        this.courseId = (long) (Math.random() * 1000);
         this.name = name;
         this.description = description;
         students = new ArrayList<>();

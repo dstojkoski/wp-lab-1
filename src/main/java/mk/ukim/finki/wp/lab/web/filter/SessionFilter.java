@@ -15,8 +15,12 @@ public class SessionFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
         String path = req.getServletPath();
-        if(!"/listCourses".equals(path) && !"/search".equals(path) && req.getSession().getAttribute("courseId") == null){
-            resp.sendRedirect("/listCourses");
+        if(!"/courses".equals(path)
+                && !"/search".equals(path)
+                && req.getSession().getAttribute("courseId") == null
+                && !path.contains("/courses/")
+        ){
+            resp.sendRedirect("/courses");
         }else{
             filterChain.doFilter(servletRequest,servletResponse);
         }

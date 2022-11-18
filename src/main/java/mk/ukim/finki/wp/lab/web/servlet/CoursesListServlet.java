@@ -27,7 +27,7 @@ public class CoursesListServlet extends HttpServlet {
         WebContext webContext = new WebContext(req,resp,req.getServletContext());
         webContext.setVariable("courses", courseService.listAll());
 
-        this.springTemplateEngine.process("listCourses.html", webContext, resp.getWriter());
+        this.springTemplateEngine.process("OldlistCourses.html", webContext, resp.getWriter());
     }
 
     @Override

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Welcome and Choose a Course</title>
+    <style>
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Courses List</h1>
+<!--    <ul>-->
+<!--        <li  th:each="course : ${courses}" th:text="${course.name}"></li>-->
+<!--    </ul>-->
+</header>
+<main>
+    <h2>Choose course:</h2>
+    <form th:method="POST" th:action="@{/listCourses}">
+
+        <th:block th:each="course : ${courses}">
+            <input type="radio" name="courseId" th:id="${course.getDescription()}" th:value="${course.getCourseId()}">
+            <label th:for="${course.getDescription()}" th:text="${course.getName()}"></label>
+            <br>
+
+        </th:block>
+
+<!--        &lt;!&ndash;th:action="/AddStudent"&ndash;&gt;-->
+<!--        <input type="radio" name="courseId" value="1"> Веб програмирање<br/>-->
+<!--        <input type="radio" name="courseId" value="2"> Оперативни системи<br/>-->
+<!--        <input type="radio" name="courseId" value="3"> Електронска и мобилна трговија<br/>-->
+<!--        <input type="radio" name="courseId" value="4"> Компјутерски мрежи<br/>-->
+
+        <br/>
+        <input type="submit" value="Submit">
+    </form>
+    <br>
+    <a href="/search">Search students</a>
+
+</main>
+</body>
+</html>

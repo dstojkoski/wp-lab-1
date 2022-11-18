@@ -32,9 +32,9 @@ public class SearchStudentOrCourse extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("students", studentService.listAll());
-        context.setVariable("courses", courseService.listAll());
+        //context.setVariable("courses", courseService.listAll());
 
-        this.springTemplateEngine.process("searchStudentsOrCourses.html", context, resp.getWriter());
+        this.springTemplateEngine.process("listStudents.html", context, resp.getWriter());
     }
 
     @Override
@@ -48,9 +48,9 @@ public class SearchStudentOrCourse extends HttpServlet {
         context.setVariable("foundStudents", st);
         context.setVariable("students", st);
        // context.setVariable("students", studentService.listAll());
-        context.setVariable("courses", courseService.listAll());
+        //context.setVariable("courses", courseService.listAll());
 
-        this.springTemplateEngine.process("searchStudentsOrCourses.html", context, resp.getWriter());
+        this.springTemplateEngine.process("listStudents.html", context, resp.getWriter());
 
     }
 }
