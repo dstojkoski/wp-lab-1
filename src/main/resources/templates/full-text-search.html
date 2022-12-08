@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+<h1>Students list</h1>
+<ul>
+    <li th:each="student : ${students}" th:text="${student.name} + ' ' + ${student.surname} + ' (' + ${student.getUsername()} + ')'"></li>
+</ul>
+
+<h1>Courses list</h1>
+<ul>
+    <li th:each="course : ${courses}" th:text="${course.name} + ' (' + ${course.description} + ')'">
+        <ul>
+            <li th:each="student : ${course.getStudents()}"></li>
+        </ul>
+    </li>
+</ul>
+<!--<h1>Courses list</h1>-->
+<!--<ul>-->
+<!--    <li th:each="course : ${courses}" th:text="${course.name}"></li>-->
+<!--</ul>-->
+
+<form th:method="POST" th:action="@{/full-text}">
+    <label>Search: <input type="text" name="search"></label>
+    <input type="submit" value="Submit">
+    <button value="clear" th:action="@{/full-text}">Clear</button>
+</form>
+
+<!--<ul th:if="${foundStudents != null}">-->
+<!--    <li th:each="found : ${foundStudents}" th:text="${found.name} + ' ' + ${found.surname}"></li>-->
+<!--</ul>-->
+
+<br>
+<a href="listCourses">Back</a>
+</body>
+</html>

@@ -6,10 +6,7 @@ import mk.ukim.finki.wp.lab.model.Teacher;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -37,7 +34,8 @@ public class CourseRepository {
     }
 
     public List<Course> findByName(String name){
-        return courses.stream().filter(s -> s.getName().contains(name)).collect(Collectors.toList());
+        return courses.stream().filter(s -> s.getName().toLowerCase().contains(name.toLowerCase()) ||
+                s.getDescription().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());
     }
 
     public List<Student> findAllStudentsByCourse(Long courseId) {

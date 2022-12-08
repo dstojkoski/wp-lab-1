@@ -19,6 +19,7 @@ public class SessionFilter implements Filter {
                 && !"/search".equals(path)
                 && req.getSession().getAttribute("courseId") == null
                 && !path.contains("/courses/")
+                && !path.equals("/full-text")
         ){
             resp.sendRedirect("/courses");
         }else{

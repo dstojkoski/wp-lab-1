@@ -8,6 +8,7 @@ import java.util.List;
 public interface StudentService {
     List<Student> listAll();
     List<Student> searchByNameOrSurname(String text);
+    List<Student> search(String text);
     Student searchByUsername(String username);
     Student save(String username, String password, String name, String surname);
 }

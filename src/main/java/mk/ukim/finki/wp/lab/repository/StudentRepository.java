@@ -30,6 +30,14 @@ public class StudentRepository {
         return students.stream().filter(s -> s.getName().toLowerCase().contains(text.toLowerCase()) || s.getSurname().toLowerCase().contains(text.toLowerCase())).collect(Collectors.toList());
     }
 
+    public List<Student> findAllByNameOrUsername(String text){
+        final String t = text.toLowerCase();
+        return students.stream().filter(s -> s.getName().toLowerCase().contains(t)
+                || s.getSurname().toLowerCase().contains(t)
+                || s.getUsername().toLowerCase().contains(t)).collect(Collectors.toList());
+
+    }
+
     public Student addStudent(String username, String password, String name, String surname){
         Student s = new Student(username,password,name,surname);
         students.add(s);

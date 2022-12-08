@@ -70,7 +70,8 @@ public class CourseController {
     @PostMapping("/add")
     public String saveCourse(@RequestParam String course,
                              @RequestParam String description,
-                             @RequestParam Long teacherId){
+                             @RequestParam Long teacherId
+                             ){
         courseService.addCourse(course, description, teacherId);
 
         return "redirect:/courses";
