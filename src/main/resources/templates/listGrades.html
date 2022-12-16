@@ -1,0 +1,37 @@
+<th:block>
+    <head>
+        <title>List Grades</title>
+    </head>
+    <h1 class="text-info"> Showing all Grades </h1>
+    <h1 th:if="${hasError}" th:text="${error}" class="text-danger"></h1>
+    <form th:action="@{/grades/allGrades}">
+        <h3 style="color:green">Filter grades by date</h3>
+        <input type="datetime-local" name="from">
+        <input type="datetime-local" name="to">
+        <select name="courseId">
+            <option th:each="course : ${courses}"
+                    th:value="${course.getCourseId()}"
+                    th:text="${course.getName()}">
+            </option>
+        </select>
+        <input type="submit">
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Student</th>
+            <th scope="col">Course</th>
+            <th scope="col">Date Added</th>
+            <th scope="col">Grade</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="grade: ${grades}">
+            <td th:text="${grade.getStudent().getName()} + ' ' + ${grade.getStudent().getSurname()}"></td>
+            <td th:text="${grade.getCourse().getName()}"></td>
+            <td th:text="${#temporals.format(grade.getTimestamp(),'dd-MM-yyyy HH:mm:ss')}"></td>
+            <td th:text="${grade.getGrade()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</th:block>

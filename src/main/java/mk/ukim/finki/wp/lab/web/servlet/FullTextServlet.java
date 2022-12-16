@@ -42,7 +42,7 @@ public class FullTextServlet extends HttpServlet {
         WebContext context = new WebContext(req, resp, req.getServletContext());
         String s = req.getParameter("search");
 
-        List<Student> st = studentService.search(s);
+        List<Student> st = studentService.searchByNameOrSurname(s);
         List<Course>  courses = courseService.listFiltered(s);
 
         context.setVariable("foundStudents", st);

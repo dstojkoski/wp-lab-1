@@ -3,14 +3,16 @@ package mk.ukim.finki.wp.lab.service.impl;
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.model.Teacher;
+import mk.ukim.finki.wp.lab.model.enumerations.Type;
 import mk.ukim.finki.wp.lab.model.exceptions.CourseNotFoundException;
 import mk.ukim.finki.wp.lab.model.exceptions.TeacherNotFoundException;
-import mk.ukim.finki.wp.lab.repository.CourseRepository;
+import mk.ukim.finki.wp.lab.repository.jpa.CourseRepository;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.StudentService;
 import mk.ukim.finki.wp.lab.service.TeacherService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,22 +31,24 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> listAll() {
-        return courseRepository.findAllCourses();
+        return courseRepository.findAll();
     }
     @Override
     public List<Course> listAllSorted() {
-        return courseRepository.findAllCoursesSorted();
+        //return CourseRepository.findAllByOrderByNameDesc();
+        return courseRepository.findAllByOrderByCourseId();
     }
 
     @Override
     public List<Course> listFiltered(String text) {
-        return courseRepository.findByName(text.trim());
+        return courseRepository.findAllByNameLike(text.trim());
     }
 
 
     @Override
     public List<Student> listStudentsByCourse(Long courseId) {
-       return courseRepository.findAllStudentsByCourse(courseId);
+        Course c = courseRepository.findById(courseId).orElseThrow(()->new CourseNotFoundException(courseId));
+        return c.getStudents();
     }
 
     @Override
@@ -53,20 +57,34 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public Course addStudentInCourse(String username, Long courseId) {
         Course c = courseRepository.findById(courseId).orElseThrow(() -> new CourseNotFoundException(courseId));
         Student s = studentService.searchByUsername(username);
 
-        return courseRepository.addStudentToCourse(s, c);
+        c.getStudents().removeIf(st -> st.getUsername().equals(username));
+        c.getStudents().add(s);
+
+        return c;
     }
 
     @Override
-    public Optional<Course> addCourse(String course, String description, Long teacherId) {
+    @Transactional
+    public Optional<Course> addCourse(String course, String description, Long teacherId, Type type) {
         Teacher t = teacherService.findById(teacherId)
                 .orElseThrow(() -> new TeacherNotFoundException(teacherId));
 
+        if(!this.courseRepository.findAllByName(course).isEmpty())
+        {
+            Course c = this.courseRepository.findAllByName(course).get(0);
+            c.setName(course);
+            c.setDescription(description);
+            c.setTeacher(t);
+            c.setType(type);
+            return Optional.of(c);
+        }
 
-        return this.courseRepository.addCourse(course, description, t);
+        return Optional.of(this.courseRepository.save(new Course(course, description, t, type)));
     }
 
     @Override

@@ -1,8 +1,5 @@
 package mk.ukim.finki.wp.lab.web.servlet;
 
-import mk.ukim.finki.wp.lab.model.Course;
-import mk.ukim.finki.wp.lab.model.Student;
-import mk.ukim.finki.wp.lab.repository.StudentRepository;
 import mk.ukim.finki.wp.lab.service.StudentService;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -35,7 +32,7 @@ public class ListStudentServlet extends HttpServlet {
 
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("students", studentService.listAll());
-        this.springTemplateEngine.process("listStudents.html", context, resp.getWriter());
+        this.springTemplateEngine.process("newListStudents.html", context, resp.getWriter());
 
     }
 

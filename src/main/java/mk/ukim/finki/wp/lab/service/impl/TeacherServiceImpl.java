@@ -1,10 +1,12 @@
 package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Teacher;
-import mk.ukim.finki.wp.lab.repository.TeacherRepository;
+import mk.ukim.finki.wp.lab.model.TeacherFullName;
+import mk.ukim.finki.wp.lab.repository.jpa.TeacherRepository;
 import mk.ukim.finki.wp.lab.service.TeacherService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,5 +26,24 @@ public class TeacherServiceImpl implements TeacherService {
 
     public Optional<Teacher> findById(Long id){
         return teacherRepository.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public Teacher addTeacher(String name, String surname) {
+        Teacher t = new Teacher(new TeacherFullName(name,surname));
+
+        teacherRepository.save(t);
+        return t;
+    }
+
+    @Override
+    public void deleteTeacher(Long id) {
+        teacherRepository.deleteById(id);
+    }
+
+    @Override
+    public void save(Teacher t){
+        teacherRepository.save(t);
     }
 }

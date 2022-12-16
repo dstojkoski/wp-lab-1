@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8"/>
     <title>Add course</title>
@@ -84,12 +84,28 @@
                                 th:selected="${course.getTeacher() != null && course.getTeacher().getId() == teacher.getId()}"
                                 th:each="teacher : ${teachers}"
                                 th:value="${teacher.getId()}"
-                                th:text="${teacher.getName()} + ' ' + ${teacher.getSurname()}">
+                                th:text="${teacher.getTeacherFullName().getName()} + ' ' + ${teacher.getTeacherFullName().getSurname()}">
                         </option>
                         <option th:if="${course} == null"
                                 th:each="teacher : ${teachers}"
                                 th:value="${teacher.getId()}"
-                                th:text="${teacher.getName()} + ' ' + ${teacher.getSurname()}">
+                                th:text="${teacher.getTeacherFullName().getName()} + ' ' + ${teacher.getTeacherFullName().getSurname()}">
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <select name="courseType" class="form-control">
+                        <option th:if="${course} != null"
+                                th:selected="${course.getType() != null && course.getType() == type}"
+                                th:each="type : ${types}"
+                                th:value="${type}"
+                                th:text="${type}">
+                        </option>
+                        <option th:if="${course} == null"
+                                th:each="type : ${types}"
+                                th:value="${type}"
+                                th:text="${type}">
                         </option>
                     </select>
                 </div>

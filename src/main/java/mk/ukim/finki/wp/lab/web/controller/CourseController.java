@@ -3,6 +3,7 @@ package mk.ukim.finki.wp.lab.web.controller;
 
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Teacher;
+import mk.ukim.finki.wp.lab.model.enumerations.Type;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.TeacherService;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @Controller // Vrakja view
 // @RestController kreira RESTful API, ne vrakja view, tuku vrakja podatoci (primer JSON)
-// Klientskata aplikacija (React, Angular) prava povici do toa API
+// Klientskata aplikacija (React, Angular) pravi povici do toa API
 @RequestMapping("/courses")
 public class CourseController {
 
@@ -33,8 +34,7 @@ public class CourseController {
             model.addAttribute("error", error);
         }
 
-        model.addAttribute("courses", courseService.listAllSorted());
-
+        model.addAttribute("courses", courseService.listAll());
         return "listCourses";
     }
 
@@ -53,6 +53,7 @@ public class CourseController {
 
             model.addAttribute("course", course);
             model.addAttribute("teachers", teachers);
+            model.addAttribute("types", Type.values());
             return "add-course";
         }
         return "redirect:/courses?error=CourseNotFound";
@@ -64,15 +65,17 @@ public class CourseController {
         List<Teacher> teachers = this.teacherService.findAll();
 
         model.addAttribute("teachers", teachers);
+        model.addAttribute("types", Type.values());
         return "add-course";
     }
 
     @PostMapping("/add")
     public String saveCourse(@RequestParam String course,
                              @RequestParam String description,
-                             @RequestParam Long teacherId
+                             @RequestParam Long teacherId,
+                             @RequestParam Type courseType
                              ){
-        courseService.addCourse(course, description, teacherId);
+        courseService.addCourse(course, description, teacherId,  courseType);
 
         return "redirect:/courses";
     }

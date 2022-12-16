@@ -1,8 +1,9 @@
-package mk.ukim.finki.wp.lab.repository;
+package mk.ukim.finki.wp.lab.repository.impl;
 
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.model.Teacher;
+import mk.ukim.finki.wp.lab.model.enumerations.Type;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -10,18 +11,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
-public class CourseRepository {
+public class InMemoryCourseRepository {
 
     private List<Course> courses = new ArrayList<>();
 
-    @PostConstruct
-    void init() {
-        courses.add(new Course("Веб програмирање", "WP"));
-        courses.add(new Course("Вештачка интелигенција", "AI"));
-        courses.add(new Course("Машинско учење", "ML"));
-        courses.add(new Course("Паралелно програмирање", "PP"));
-        courses.add(new Course("Линеарна алгебра", "LA"));
-    }
+//    @PostConstruct
+//    void init() {
+//        courses.add(new Course("Веб програмирање", "WP"));
+//        courses.add(new Course("Вештачка интелигенција", "AI"));
+//        courses.add(new Course("Машинско учење", "ML"));
+//        courses.add(new Course("Паралелно програмирање", "PP"));
+//        courses.add(new Course("Линеарна алгебра", "LA"));
+//    }
 
     public List<Course> findAllCourses() {
         return courses;
@@ -60,7 +61,7 @@ public class CourseRepository {
     // TODO posledno baranje od lab, dali tuka da proveruvam za duplikat kurs?
     public Optional<Course> addCourse(String name, String description, Teacher teacher){
         courses.removeIf(c -> c.getName().equals(name));
-        Course c = new Course(name, description);
+        Course c = new Course(name, description, Type.ELECTIVE);
         c.setTeacher(teacher);
         courses.add(c);
         return Optional.of(c);

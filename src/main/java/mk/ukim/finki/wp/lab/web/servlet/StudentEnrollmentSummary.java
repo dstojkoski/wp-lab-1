@@ -1,7 +1,11 @@
 package mk.ukim.finki.wp.lab.web.servlet;
 
 import mk.ukim.finki.wp.lab.model.Course;
+import mk.ukim.finki.wp.lab.model.Grade;
+import mk.ukim.finki.wp.lab.model.Student;
+import mk.ukim.finki.wp.lab.repository.jpa.GradeRepository;
 import mk.ukim.finki.wp.lab.service.CourseService;
+import mk.ukim.finki.wp.lab.service.GradeService;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
@@ -11,16 +15,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "studentEnrollment", urlPatterns = "/StudentEnrollmentSummary")
 public class StudentEnrollmentSummary extends HttpServlet {
 
     CourseService courseService;
+    GradeService gradeService;
     SpringTemplateEngine springTemplateEngine;
 
-    public StudentEnrollmentSummary(CourseService courseService, SpringTemplateEngine springTemplateEngine) {
+    public StudentEnrollmentSummary(CourseService courseService, SpringTemplateEngine springTemplateEngine, GradeService gradeService) {
         this.courseService = courseService;
         this.springTemplateEngine = springTemplateEngine;
+        this.gradeService = gradeService;
     }
 
     @Override
@@ -30,7 +38,7 @@ public class StudentEnrollmentSummary extends HttpServlet {
 //            return;
 //        }
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        Long id = Long.parseLong((String) req.getSession().getAttribute("courseId"));
+        Long id = Long.parseLong(String.valueOf(req.getSession().getAttribute("courseId")));
 
         Course c = courseService.listAll().stream().filter(s -> s.getCourseId() == id).findFirst().get();
         context.setVariable("courseSummary", c);
@@ -40,14 +48,15 @@ public class StudentEnrollmentSummary extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        Long id = (Long) req.getSession().getAttribute("courseId");
+        Long id = Long.parseLong(String.valueOf(req.getSession().getAttribute("courseId")));
 
         String username = req.getParameter("student");
         Course c = courseService.addStudentInCourse(username, id);
-
+        Map<Student, Character> studentGradeMap = gradeService.mappedGrades(c);
         context.setVariable("courseSummary", c);
+        context.setVariable("grades", studentGradeMap);
         //context.setVariable("studentsInCourse", c.getStudents());
-        req.getSession().invalidate();
+        //req.getSession().invalidate();
         springTemplateEngine.process("studentsInCourse.html", context, resp.getWriter());
     }
 }
