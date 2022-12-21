@@ -12,7 +12,8 @@
 
 <h1>Courses list</h1>
 <ul>
-    <li th:each="course : ${courses}" th:text="${course.name} + ' (' + ${course.description} + ')'">
+    <li th:each="course : ${courses}" th:text="${course.name} + ' (' + ${course.description} + ') ('
+    + ${course.getTeacher().getTeacherFullName().getName() } + ' ' + ${course.getTeacher().getTeacherFullName().getSurname() } +')'">
         <ul>
             <li th:each="student : ${course.getStudents()}"></li>
         </ul>
@@ -26,8 +27,9 @@
 <form th:method="POST" th:action="@{/full-text}">
     <label>Search: <input type="text" name="search"></label>
     <input type="submit" value="Submit">
-    <button value="clear" th:action="@{/full-text}">Clear</button>
+
 </form>
+<a th:href="@{/full-text}">Clear</a>
 
 <!--<ul th:if="${foundStudents != null}">-->
 <!--    <li th:each="found : ${foundStudents}" th:text="${found.name} + ' ' + ${found.surname}"></li>-->

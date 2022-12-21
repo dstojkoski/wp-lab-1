@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, String> {
     public List<Student> findAllByNameContainsOrSurnameContains(String name, String surname);
+    public List<Student> findAllByNameIgnoreCaseContainsOrSurnameIgnoreCaseContainsOrUsernameIgnoreCaseContains(String name, String surname, String username);
 }

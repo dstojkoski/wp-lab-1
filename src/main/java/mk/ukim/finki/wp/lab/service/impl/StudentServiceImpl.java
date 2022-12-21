@@ -23,7 +23,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> searchByNameOrSurname(String text) {
-        return studentRepository.findAllByNameContainsOrSurnameContains(text.trim(), text.trim());
+        text = text.trim();
+        return studentRepository.findAllByNameIgnoreCaseContainsOrSurnameIgnoreCaseContainsOrUsernameIgnoreCaseContains(text, text, text);
+       // return studentRepository.findAllByNameContainsOrSurnameContains(text.trim(), text.trim());
     }
 
     @Override
