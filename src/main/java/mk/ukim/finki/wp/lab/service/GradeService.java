@@ -11,7 +11,9 @@ import java.util.Map;
 public interface GradeService {
     List<Grade> findAll();
     Grade findByStudentAndCourse(Student s, Course c);
-    Map<Student, Character> mappedGrades(Course c);
+    Map<String, Character> mappedGrades(Course c);
     Grade save(Character grade, Student s, Course c, LocalDateTime date);
     List<Grade> findBetween(LocalDateTime from, LocalDateTime to, Course c);
+    void deleteByCourse(Course course);
+    void deleteByStudent(Student student);
 }

@@ -3,6 +3,7 @@ package mk.ukim.finki.wp.lab.web.controller;
 import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Grade;
 import mk.ukim.finki.wp.lab.model.Student;
+import mk.ukim.finki.wp.lab.model.enumerations.Type;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.GradeService;
 import mk.ukim.finki.wp.lab.service.StudentService;
@@ -53,7 +54,7 @@ public class GradeController {
             model.addAttribute("courses", courseService.listAll());
         }
         model.addAttribute("bodyContent","listGrades");
-        return "listGrades";
+        return "master-template";
     }
 
     @GetMapping
@@ -61,19 +62,26 @@ public class GradeController {
         List<Grade> grades = gradeService.findAll();
 
         model.addAttribute("allGrades", grades);
-
-        return "listGrades";
+        model.addAttribute("bodyContent", "listGrades");
+        return "master-template";
     }
 
     @GetMapping("/add-grade/{course-id}&{student-id}")
     public String addGrade(@PathVariable("course-id") Long cid, @PathVariable("student-id") String student, Model model){
             Course course = this.courseService.findById(cid).get();
             Student st = studentService.searchByUsername(student);
+            Grade g = gradeService.findByStudentAndCourse(st,course);
 
+            if(g != null){
+                model.addAttribute("grade", g);
+                model.addAttribute("date", g.getTimestamp());
+            }
+            model.addAttribute("grades", List.of("A", "B", "C", "D", "E", "F"));
             model.addAttribute("course", course);
-            model.addAttribute("student", student);
-            return "add-grade";
+            model.addAttribute("student", st);
+            model.addAttribute("bodyContent", "add-grade");
 
+            return "master-template";
     }
 
     @PostMapping("/add-grade/{id}")
@@ -84,6 +92,6 @@ public class GradeController {
                                     @PathVariable Long id){
 
         gradeService.save(grade.charAt(0), studentService.searchByUsername(student), courseService.findById(id).get(), date);
-        return "redirect:/courses";
+        return "redirect:/courses/" + id;
     }
 }

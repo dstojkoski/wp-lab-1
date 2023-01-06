@@ -38,10 +38,14 @@ public class StudentEnrollmentSummary extends HttpServlet {
 //            return;
 //        }
         WebContext context = new WebContext(req, resp, req.getServletContext());
-        Long id = Long.parseLong(String.valueOf(req.getSession().getAttribute("courseId")));
+//        Long id = Long.parseLong(String.valueOf(req.getSession().getAttribute("courseId")));
 
+        Long id = Long.valueOf(req.getParameter("id"));
         Course c = courseService.listAll().stream().filter(s -> s.getCourseId() == id).findFirst().get();
+
+        Map<String, Character> studentGradeMap = gradeService.mappedGrades(c);
         context.setVariable("courseSummary", c);
+        context.setVariable("grades", studentGradeMap);
         springTemplateEngine.process("studentsInCourse.html", context, resp.getWriter());
     }
 
@@ -52,11 +56,11 @@ public class StudentEnrollmentSummary extends HttpServlet {
 
         String username = req.getParameter("student");
         Course c = courseService.addStudentInCourse(username, id);
-        Map<Student, Character> studentGradeMap = gradeService.mappedGrades(c);
+        Map<String, Character> studentGradeMap = gradeService.mappedGrades(c);
         context.setVariable("courseSummary", c);
         context.setVariable("grades", studentGradeMap);
         //context.setVariable("studentsInCourse", c.getStudents());
         //req.getSession().invalidate();
-        springTemplateEngine.process("studentsInCourse.html", context, resp.getWriter());
+        resp.sendRedirect("/courses/" + id);
     }
 }

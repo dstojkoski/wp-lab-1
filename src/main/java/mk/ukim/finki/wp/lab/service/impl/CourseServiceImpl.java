@@ -8,13 +8,13 @@ import mk.ukim.finki.wp.lab.model.exceptions.CourseNotFoundException;
 import mk.ukim.finki.wp.lab.model.exceptions.TeacherNotFoundException;
 import mk.ukim.finki.wp.lab.repository.jpa.CourseRepository;
 import mk.ukim.finki.wp.lab.service.CourseService;
+import mk.ukim.finki.wp.lab.service.GradeService;
 import mk.ukim.finki.wp.lab.service.StudentService;
 import mk.ukim.finki.wp.lab.service.TeacherService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -23,11 +23,13 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final StudentService studentService;
     private final TeacherService teacherService;
+    private final GradeService gradeService;
 
-    public CourseServiceImpl(CourseRepository courseRepository, StudentService studentService, TeacherService teacherService) {
+    public CourseServiceImpl(CourseRepository courseRepository, StudentService studentService, TeacherService teacherService, GradeService gradeService) {
         this.courseRepository = courseRepository;
         this.studentService = studentService;
         this.teacherService = teacherService;
+        this.gradeService = gradeService;
     }
 
     @Override
@@ -92,7 +94,10 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
+        Course c = this.courseRepository.findById(id).get();
+        gradeService.deleteByCourse(c);
         this.courseRepository.deleteById(id);
     }
 }

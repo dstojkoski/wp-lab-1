@@ -14,4 +14,7 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     Grade findByStudentAndCourse(Student s, Course c);
     List<Grade> findByCourse(Course c);
     List<Grade> findByTimestampBetweenAndCourse(LocalDateTime from, LocalDateTime to, Course c);
+    void deleteByCourse(Course course);
+    void deleteByStudent(Student student);
+    void deleteByStudentAndCourse(Student student, Course course);
 }

@@ -12,22 +12,10 @@ import java.util.List;
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-    // @Query(value = "") ako ni treba query
     List<Course> findAllByName(String name);
     List<Course> findAllByNameLike(String name);
-    List<Course> findAllByNameIgnoreCaseContainsOrDescriptionIgnoreCaseContains(String name, String description);
     List<Course> findAllByOrderByNameDesc();
     List<Course> findAllByOrderByCourseId();
-
-//    @Query(
-//            value = "select c.description, c.name, c.course_id, c.type, c.teacher_id from course c join teacher s on c.teacher_id=s.id " +
-//                    "where upper(c.description) like upper(?1) " +
-//                    "or upper(c.name) like upper(?1)" +
-//                    "or upper(c.type) like upper(?1)" +
-//                    "or upper(c.description) like upper(?1)" +
-//                    "or upper(s.teacher_full_name) like upper(?1)",
-//            nativeQuery = true)
-//    List<Course> searchAll(String s);
 
 //    @Query(
 //            value = "select c.description, c.name, c.course_id, c.type, c.teacher_id from course c join teacher s on c.teacher_id=s.id " +
@@ -39,10 +27,11 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
 //        nativeQuery = true)
 //    List<Course> searchAll(@Param("str") String s);
 
-    @Query("select c from Course c where upper(c.teacher.teacherFullName.name) like ?1 " +
-            "or upper(c.teacher.teacherFullName.surname) like ?1 " +
-            "or upper(c.name) like ?1 " +
-            "or upper(c.description) like ?1 ")
+
+    @Query("select c from Course c where upper(c.teacher.teacherFullName.name) like %?1% " +
+            "or upper(c.teacher.teacherFullName.surname) like %?1% " +
+            "or upper(c.name) like %?1% " +
+            "or upper(c.description) like %?1% ")
     List<Course> query(String query);
 
 
