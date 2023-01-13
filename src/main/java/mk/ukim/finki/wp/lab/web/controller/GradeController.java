@@ -90,8 +90,8 @@ public class GradeController {
                                     @RequestParam String student,
                                     @RequestParam String grade,
                                     @PathVariable Long id){
-
-        gradeService.save(grade.charAt(0), student, grade, date);
+        Course c = courseService.findById(id).get();
+        gradeService.save(grade.charAt(0), student, c.getName(), date);
         return "redirect:/courses/" + id;
     }
 }

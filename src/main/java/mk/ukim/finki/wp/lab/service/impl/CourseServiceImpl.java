@@ -5,6 +5,7 @@ import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.model.Teacher;
 import mk.ukim.finki.wp.lab.model.enumerations.Type;
 import mk.ukim.finki.wp.lab.model.exceptions.CourseNotFoundException;
+import mk.ukim.finki.wp.lab.model.exceptions.StudentAlreadyInCourseException;
 import mk.ukim.finki.wp.lab.model.exceptions.TeacherNotFoundException;
 import mk.ukim.finki.wp.lab.repository.jpa.CourseRepository;
 import mk.ukim.finki.wp.lab.service.CourseService;
@@ -68,7 +69,10 @@ public class CourseServiceImpl implements CourseService {
         Course c = courseRepository.findById(courseId).orElseThrow(() -> new CourseNotFoundException(courseId));
         Student s = studentService.searchByUsername(username);
 
-        c.getStudents().removeIf(st -> st.getUsername().equals(username));
+        if(c.getStudents().contains(s))
+            throw new StudentAlreadyInCourseException();
+
+        //c.getStudents().removeIf(st -> st.getUsername().equals(username));
         c.getStudents().add(s);
 
         return c;

@@ -18,9 +18,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     AuthenticationSuccessHandlerImpl authenticationSuccessHandler;
 
+    private final CustomUsernameAndPasswordAuthenticationProvider authenticationProvider;
 
-    public WebSecurityConfig(PasswordEncoder passwordEncoder) {
+    public WebSecurityConfig(PasswordEncoder passwordEncoder, CustomUsernameAndPasswordAuthenticationProvider authenticationProvider) {
         this.passwordEncoder = passwordEncoder;
+        this.authenticationProvider = authenticationProvider;
     }
 
     @Override
@@ -44,13 +46,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .logoutSuccessUrl("/login");
 
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/login","/courses","/grades/allGrades","/teachers/allTeachers","/css/**","/img/**","/js/**","/lib/**")
+                .authorizeRequests().antMatchers("/register", "/login","/courses","/grades/allGrades","/teachers/allTeachers","/css/**","/img/**","/js/**","/lib/**")
                 .permitAll()
 //                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .successHandler(authenticationSuccessHandler)
+                .loginPage("/login").permitAll()
+                .failureUrl("/login?error=BadCredentials")
+                .defaultSuccessUrl("/courses", true)
+                //.successHandler(authenticationSuccessHandler)
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)
@@ -64,13 +69,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin")
-                .password(passwordEncoder.encode("123"))
-                .authorities("ROLE_ADMIN")
-                .and()
-                .withUser("user")
-                .password(passwordEncoder.encode("123"))
-                .authorities("ROLE_USER");
+//        auth.inMemoryAuthentication()
+//                .withUser("admin")
+//                .password(passwordEncoder.encode("123"))
+//                .authorities("ROLE_ADMIN")
+//                .and()
+//                .withUser("user")
+//                .password(passwordEncoder.encode("123"))
+//                .authorities("ROLE_USER");
+
+        auth.authenticationProvider(authenticationProvider);
     }
 }
