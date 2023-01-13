@@ -8,4 +8,8 @@ public class CourseNotFoundException extends RuntimeException{
         public CourseNotFoundException(Long id){
             super(String.format("Course with id: %d is not found", id));
         }
+
+    public CourseNotFoundException(String message) {
+        super(String.format("Course %s is not found", message));
+    }
 }

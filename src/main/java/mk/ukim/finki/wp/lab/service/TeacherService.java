@@ -10,5 +10,5 @@ public interface TeacherService {
     Optional<Teacher> findById(Long id);
     Teacher addTeacher(String name, String surname);
     void deleteTeacher(Long id);
-    void save(Teacher t);
+    Teacher save(Teacher t);
 }

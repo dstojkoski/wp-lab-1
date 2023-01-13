@@ -42,6 +42,6 @@ public class CreateStudentServlet extends HttpServlet {
 
         studentService.save(username, password, name, surname);
 
-        resp.sendRedirect("/AddStudent");
+        resp.sendRedirect("/students/AddStudent");
     }
 }

@@ -8,10 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
+    Optional<Course> findByName(String name);
     List<Course> findAllByName(String name);
     List<Course> findAllByNameLike(String name);
     List<Course> findAllByOrderByNameDesc();

@@ -21,10 +21,10 @@
                                placeholder="Enter course name">
                     </div>
                     <div class="form-group">
-                        <label for="price">Description</label>
+                        <label for="description">Description</label>
                         <input type="text"
                                class="form-control"
-                               id="price"
+                               id="description"
                                name="description"
                                th:value="(${course} != null ? ${course.getDescription()} : '')"
                                placeholder="Description">
@@ -32,7 +32,7 @@
 
                     <div class="form-group">
                         <label>Teacher</label>
-                        <select name="teacherId" class="form-control">
+                        <select name="teacherId" class="form-control" required>
                             <option th:if="${course} != null"
                                     th:selected="${course.getTeacher() != null && course.getTeacher().getId() == teacher.getId()}"
                                     th:each="teacher : ${teachers}"
@@ -62,7 +62,7 @@
                             </option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button id="submit" type="submit" class="btn btn-primary">Submit</button>
                     <a type="button" class="btn btn-primary" href="/courses">Back</a>
                 </form>
             </div>

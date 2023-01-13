@@ -18,7 +18,9 @@
                             <th scope="col">Name</th>
                             <th scope="col">Username</th>
                             <th scope="col">Grade</th>
-                            <th scope="col">Add Grade</th>
+                            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                <th scope="col">Add Grade</th>
+                            </th:block>
                         </tr>
                         </thead>
                         <tbody>
@@ -26,10 +28,12 @@
                             <td th:text="${student.getName()} + ' ' + ${student.getSurname()}"></td>
                             <td th:text="${student.getUsername()}"></td>
                             <td th:text="${grades.get(student.getUsername())}"></td>
+                            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
                             <td class="text-left">
                                 <a th:href="@{'/grades/add-grade/{course-id}&{student-id}' (course-id=${courseSummary.getCourseId()}, student-id=${student.getUsername()})}"
                                    class="btn btn-sm btn-info"><i class="fa fa-trash">Add grade</i></a>
                             </td>
+                            </th:block>
                         </tr>
                         </tbody>
                     </table>
@@ -38,10 +42,10 @@
             <div class="col mb-3">
                 <div class="row">
                     <div class="col-sm-6 col-md-6">
-                        <a href="/AddStudent" class="btn btn-block btn-dark">Add new student</a>
+                        <a href="/students/AddStudent" class="btn btn-block btn-dark">Add new student</a>
                     </div>
                     <div class="col-sm-6 col-md-6 mt-10">
-                        <a href="/CreateStudent" class="btn btn-block btn-dark">Create new student</a>
+                        <a href="/students/CreateStudent" class="btn btn-block btn-dark">Create new student</a>
                     </div>
                 </div>
             </div>

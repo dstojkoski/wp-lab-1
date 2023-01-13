@@ -1,61 +1,70 @@
 <div xmlns:th="http://www.thymeleaf.org">
-        <section class="jumbotron text-center">
-            <div class="container">
-                <h1 class="jumbotron-heading">COURSES</h1>
-            </div>
-        </section>
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">COURSES</h1>
+        </div>
+    </section>
 
-        <div class="container mb-4">
-            <div class="row">
-                <div class="col-12" th:if="${courses.size() > 0}">
-                    <div th:if="${hasError}">
-                        <div th:text="${error}" class="text-danger h3"></div>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col">Course name</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">ID</th>
-                                <th scope="col">Teacher</th>
-                                <th scope="col"># of Students</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="course : ${courses}">
-                                <td th:text="${course.getName()}"></td>
-                                <td th:text="${course.getDescription()}"></td>
-                                <td th:text="${course.getCourseId()}"></td>
-                                <td th:text="${course.getTeacher() != null}
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-12" th:if="${courses.size() > 0}">
+                <div th:if="${hasError}">
+                    <div th:text="${error}" class="text-danger h3"></div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">Course name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Teacher</th>
+                            <th scope="col"># of Students</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="course : ${courses}" class="course">
+                            <td th:text="${course.getName()}"></td>
+                            <td th:text="${course.getDescription()}"></td>
+                            <td th:text="${course.getCourseId()}"></td>
+                            <td th:text="${course.getTeacher() != null}
                             ? ${course.getTeacher().teacherFullName.getName()} + ' ' + ${course.getTeacher().teacherFullName.getSurname()} : 'No Teacher'"></td>
-                                <td th:text="${course.getStudents() != null}
+                            <td th:text="${course.getStudents() != null}
                             ? ${course.getStudents().size()} : 'No Students'"></td>
-                                <td class="text-right">
+                            <td class="text-right">
+                                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
                                     <form th:action="@{'/courses/delete/{id}' (id=${course.getCourseId()})}"
                                           th:method="DELETE">
-                                        <button type="submit" class="btn btn-sm btn-danger"><i
-                                                class="fa fa-trash">Delete</i></button>
+                                        <button type="submit" class="btn btn-sm btn-danger delete-course"><i
+                                                class="fa fa-trash ">Delete</i></button>
                                     </form>
+                                </th:block>
+                                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
                                     <a th:href="@{'/courses/edit-form/{id}' (id=${course.getCourseId()})}"
-                                       class="btn btn-sm btn-info"><i class="fa fa-trash">Edit</i></a>
+                                       class="btn btn-sm btn-info edit-course"><i class="fa fa-trash">Edit</i></a>
+                                </th:block>
+                                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
                                     <a th:href="@{'/courses/add-student/{id}' (id=${course.getCourseId()})}"
-                                       class="btn btn-sm btn-info"><i class="fa fa-trash">Add student</i></a>
-                                    <a th:href="@{'/courses/{id}' (id=${course.getCourseId()})}"
-                                       class="btn btn-sm btn-info"><i class="fa fa-trash">List students</i></a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                       class="btn btn-sm btn-info add-student"><i class="fa fa-trash">Add
+                                        student</i></a>
+                                </th:block>
+                                <a th:href="@{'/courses/{id}' (id=${course.getCourseId()})}"
+                                   class="btn btn-sm btn-info"><i class="fa fa-trash">List students</i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
                 <div class="col mb-3">
                     <div class="row">
                         <div class="col-sm-12 col-md-12">
-                            <a href="/courses/add-form" class="btn btn-block btn-dark">Add new course</a>
+                            <a href="/courses/add-form" class="btn btn-block btn-dark add-course">Add new course</a>
                         </div>
                     </div>
                 </div>
-            </div>
+            </th:block>
         </div>
+    </div>
 </div>

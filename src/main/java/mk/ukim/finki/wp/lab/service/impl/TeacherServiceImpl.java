@@ -43,7 +43,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public void save(Teacher t){
-        teacherRepository.save(t);
+    public Teacher save(Teacher t){
+        return teacherRepository.save(t);
     }
 }

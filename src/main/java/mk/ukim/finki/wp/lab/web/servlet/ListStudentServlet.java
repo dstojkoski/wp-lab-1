@@ -32,7 +32,9 @@ public class ListStudentServlet extends HttpServlet {
 
         WebContext context = new WebContext(req, resp, req.getServletContext());
         context.setVariable("students", studentService.listAll());
-        this.springTemplateEngine.process("newListStudents.html", context, resp.getWriter());
+        context.setVariable("bodyContent", "newListStudents");
+
+        this.springTemplateEngine.process("master-template", context, resp.getWriter());
 
     }
 

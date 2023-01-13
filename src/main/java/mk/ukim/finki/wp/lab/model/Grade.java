@@ -18,7 +18,7 @@ public class Grade {
     @ManyToOne
     private Student student;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.REMOVE)
     private Course course;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

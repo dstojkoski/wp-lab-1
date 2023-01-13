@@ -4,6 +4,7 @@ import mk.ukim.finki.wp.lab.model.Course;
 import mk.ukim.finki.wp.lab.model.Grade;
 import mk.ukim.finki.wp.lab.model.Student;
 import mk.ukim.finki.wp.lab.repository.jpa.GradeRepository;
+import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.GradeService;
 import mk.ukim.finki.wp.lab.service.StudentService;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,12 @@ public class GradeServiceImpl implements GradeService {
 
     private GradeRepository gradeRepository;
     private StudentService studentService;
+    private CourseService courseService;
 
-    public GradeServiceImpl(GradeRepository gradeRepository, StudentService studentService) {
+    public GradeServiceImpl(GradeRepository gradeRepository, StudentService studentService, CourseService courseService) {
         this.gradeRepository = gradeRepository;
         this.studentService = studentService;
+        this.courseService = courseService;
     }
 
     @Override
@@ -48,13 +51,21 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     @Transactional
-    public Grade save(Character grade, Student s, Course c, LocalDateTime date) {
-        gradeRepository.deleteByStudentAndCourse(s, c);
+    public Grade save(Character grade, String s, String c, LocalDateTime date) {
+        if( s == null || s.isEmpty() || c.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+
+
+        Student student = studentService.searchByUsername(s);
+        Course course = courseService.searchByName(c);
+
+        gradeRepository.deleteByStudentAndCourse(student, course);
 
         Grade g = new Grade();
         g.setGrade(grade);
-        g.setCourse(c);
-        g.setStudent(s);
+        g.setCourse(course);
+        g.setStudent(student);
         g.setTimestamp(date);
         return this.gradeRepository.save(g);
     }

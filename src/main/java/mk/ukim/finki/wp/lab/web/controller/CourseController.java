@@ -8,6 +8,7 @@ import mk.ukim.finki.wp.lab.model.enumerations.Type;
 import mk.ukim.finki.wp.lab.service.CourseService;
 import mk.ukim.finki.wp.lab.service.GradeService;
 import mk.ukim.finki.wp.lab.service.TeacherService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -49,7 +50,7 @@ public class CourseController {
     public String addStudent(@PathVariable Long id, HttpServletRequest req){
         req.getSession().setAttribute("courseId", id);
 
-        return "redirect:/AddStudent";
+        return "redirect:/students/AddStudent";
     }
 
     @GetMapping("/edit-form/{id}")
@@ -65,6 +66,13 @@ public class CourseController {
             return "master-template";
         }
         return "redirect:/courses?error=CourseNotFound";
+    }
+
+
+    @GetMapping("/access_denied")
+    public String getAccessDeniedPage(Model model) {
+        model.addAttribute("bodyContent", "access_denied");
+        return "master-template";
     }
 
     @GetMapping("/{id}")
@@ -83,6 +91,7 @@ public class CourseController {
     }
 
     @GetMapping("/add-form")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String getAddCoursePage(Model model) {
         List<Teacher> teachers = this.teacherService.findAll();
 
@@ -93,6 +102,7 @@ public class CourseController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String saveCourse(@RequestParam String course,
                              @RequestParam String description,
                              @RequestParam Long teacherId,

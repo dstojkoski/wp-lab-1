@@ -23,13 +23,11 @@ public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final StudentService studentService;
     private final TeacherService teacherService;
-    private final GradeService gradeService;
 
-    public CourseServiceImpl(CourseRepository courseRepository, StudentService studentService, TeacherService teacherService, GradeService gradeService) {
+    public CourseServiceImpl(CourseRepository courseRepository, StudentService studentService, TeacherService teacherService) {
         this.courseRepository = courseRepository;
         this.studentService = studentService;
         this.teacherService = teacherService;
-        this.gradeService = gradeService;
     }
 
     @Override
@@ -43,10 +41,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> listFiltered(String text) {
+    public Course searchByName(String course) {
+        return courseRepository.findByName(course).orElseThrow(() -> new CourseNotFoundException(course));
+    }
 
-        // courseRepository.findAllByNameIgnoreCaseContainsOrDescriptionIgnoreCaseContains(text.trim(), text.trim());
-        //return courseRepository.searchAll(text.toUpperCase());
+    @Override
+    public List<Course> listFiltered(String text) {
         return courseRepository.query(text.toUpperCase());
     }
 
@@ -95,9 +95,23 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
+    public Optional<Course> addCourse(String course, String description, Type type) {
+
+        if(!this.courseRepository.findAllByName(course).isEmpty())
+        {
+            Course c = this.courseRepository.findAllByName(course).get(0);
+            c.setName(course);
+            c.setDescription(description);
+            c.setType(type);
+            return Optional.of(c);
+        }
+
+        return Optional.of(this.courseRepository.save(new Course(course, description, type)));
+    }
+    @Override
+    @Transactional
     public void deleteById(Long id) {
         Course c = this.courseRepository.findById(id).get();
-        gradeService.deleteByCourse(c);
         this.courseRepository.deleteById(id);
     }
 }
