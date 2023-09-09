@@ -29,7 +29,7 @@ public class CreateStudentServlet extends HttpServlet {
 //            resp.sendRedirect("/listCourses");
 //            return;
 //        }
-        springTemplateEngine.process("createStudent.html", context, resp.getWriter());
+        springTemplateEngine.process("createStudent", context, resp.getWriter());
 
     }
 

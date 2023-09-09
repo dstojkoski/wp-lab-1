@@ -46,7 +46,7 @@ public class StudentEnrollmentSummary extends HttpServlet {
         Map<String, Character> studentGradeMap = gradeService.mappedGrades(c);
         context.setVariable("courseSummary", c);
         context.setVariable("grades", studentGradeMap);
-        springTemplateEngine.process("studentsInCourse.html", context, resp.getWriter());
+        springTemplateEngine.process("studentsInCourse", context, resp.getWriter());
     }
 
     @Override

@@ -10,7 +10,7 @@
     </parent>
     <groupId>mk.ukim.finki.wp</groupId>
     <artifactId>lab</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.2.0</version>
     <name>lab</name>
     <description>lab</description>
     <properties>
@@ -26,8 +26,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-
 
 
         <dependency>
