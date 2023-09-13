@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wp-app-service
+  namespace: wp
+  labels:
+    app: wp-app
+spec:
+  ports:
+    - port: 8080
+      targetPort: web-svc
+      protocol: TCP
+  selector:
+    app: wp-app

@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wp-app-postgres-config
+  namespace: wp
+  labels:
+    app: wp-app
+data:
+  POSTGRES_USER: "postgres"
+  POSTGRES_DB: "university"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: wp-app-postgres-secret
+  namespace: wp
+type: Opaque
+data:
+  password: cG9zdGdyZXM=
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wp-app-pvc
+  namespace: wp
+  labels:
+    app: postgres
+spec:
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 512Mi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wp-app-postgres
+  namespace: wp
+spec:
+  serviceName: wp-app-postgres-service
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres
+        namespace: wp
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          envFrom:
+            - configMapRef:
+                name: wp-app-postgres-config
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wp-app-postgres-secret
+                  key: password
+          ports:
+            - containerPort: 5432
+              name: postgres-port
+          volumeMounts:
+            - name: wp-app-postgres-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: wp-app-postgres-data
+          persistentVolumeClaim:
+            claimName: wp-app-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wp-app-postgres-service
+  namespace: wp
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

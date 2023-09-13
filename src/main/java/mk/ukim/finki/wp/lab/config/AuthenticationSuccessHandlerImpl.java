@@ -26,7 +26,7 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
         String username = ((User) authentication.getPrincipal()).getUsername();
-        httpServletResponse.setHeader("username",username);
+        httpServletResponse.setHeader("username", username);
         httpServletResponse.sendRedirect("/courses");
     }
 }
