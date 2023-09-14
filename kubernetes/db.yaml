@@ -9,30 +9,6 @@ data:
   POSTGRES_USER: "postgres"
   POSTGRES_DB: "university"
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: wp-app-postgres-secret
-  namespace: wp
-type: Opaque
-data:
-  password: cG9zdGdyZXM=
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: wp-app-pvc
-  namespace: wp
-  labels:
-    app: postgres
-spec:
-  storageClassName: local-path
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 512Mi
----
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -40,10 +16,10 @@ metadata:
   namespace: wp
 spec:
   serviceName: wp-app-postgres-service
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
-  replicas: 1
   template:
     metadata:
       labels:
@@ -53,6 +29,10 @@ spec:
       containers:
         - name: postgres
           image: postgres:latest
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+              protocol: TCP
           envFrom:
             - configMapRef:
                 name: wp-app-postgres-config
@@ -62,12 +42,9 @@ spec:
                 secretKeyRef:
                   name: wp-app-postgres-secret
                   key: password
-          ports:
-            - containerPort: 5432
-              name: postgres-port
           volumeMounts:
             - name: wp-app-postgres-data
-              mountPath: /var/lib/postgresql/data
+              mountPath: /var/lib/postgres/data
       volumes:
         - name: wp-app-postgres-data
           persistentVolumeClaim:
@@ -79,6 +56,7 @@ metadata:
   name: wp-app-postgres-service
   namespace: wp
 spec:
+  type: NodePort
   selector:
     app: postgres
   ports:
